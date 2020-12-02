@@ -14,12 +14,12 @@ type userHandler struct {
 	svc IUserService
 }
 
-func (h *userHandler) Get(c echo.Context) (err error) {
+func (h *userHandler) GetByID(c echo.Context) (err error) {
 	panic("TODO")
 }
 
 // InitUserHandler will initiate the user handler
 func InitUserHandler(e *echo.Echo, userSvc IUserService) {
 	h := &userHandler{}
-	e.GET("/users/:id", h.Get)
+	e.GET("/users/:id", h.GetByID)
 }
