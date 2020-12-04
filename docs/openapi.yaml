@@ -1,0 +1,262 @@
+openapi: 3.0.0
+info:
+  version: 0.0.1
+  title: 'hackerank-backend-test Swagger Docs'
+  description: 'Hackerrank backend test'
+servers:
+  - description: SwaggerHub API Auto Mocking
+    url: 'https://localhost:80'
+  - description: Local development
+    url: 'http://localhost:3000'
+paths:
+  /:
+    get:
+      tags:
+        - root
+      operationId: getRoot
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Root'
+  /healthcheck/liveness:
+    get:
+      tags:
+        - healthcheck
+      operationId: getLiveness
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Healthcheck'
+  /healthcheck/readiness:
+    get:
+      tags:
+        - healthcheck
+      operationId: getReadiness
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Healthcheck'
+  /error/{error_code}:
+    get:
+      tags:
+        - error
+        - example
+      operationId: getErrorExample
+      parameters:
+        - name: error_code
+          in: path
+          description: Error HTTP code
+          required: true
+          schema:
+            type: string
+            enum: ['200', '400', '403', '422', '500']
+      responses:
+        200:
+          description: default response, instruction to use this endpoint
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        400:
+          description: example error 400 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400Response'
+        403:
+          description: example error 403 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403Response'
+        404:
+          description: example error 404 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404Response'
+        422:
+          description: example error 422 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error422Response'
+        500:
+          description: example error 500 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500Response'
+
+components:
+  schemas:
+    Healthcheck:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          example: 'OK'
+    Root:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          example: 'OK'
+    User:
+      type: object
+      required:
+        - id
+        - firstName
+        - lastName
+        - address
+        - isActive
+      properties:
+        id:
+          type: number
+          example: 11
+        firstName:
+          type: string
+          example: 'Carl'
+        lastName:
+          type: string
+          example: 'Sagan'
+        address:
+          type: string
+          example: 'Cosmos'
+        isActive:
+          type: boolean
+          example: true
+    UserRequest:
+      type: object
+      required:
+        - firstName
+        - lastName
+        - address
+        - isActive
+      properties:
+        firstName:
+          type: string
+          example: 'Carl'
+        lastName:
+          type: string
+          example: 'Sagan'
+        address:
+          type: string
+          example: 'Cosmos'
+        isActive:
+          type: boolean
+          example: true
+
+    UserUpdateRequest:
+      type: object
+      properties:
+        firstName:
+          type: string
+          example: 'Carl'
+        lastName:
+          type: string
+          example: 'Sagan'
+        address:
+          type: string
+          example: 'Cosmos'
+        isActive:
+          type: boolean
+          example: true
+
+    Error400Response:
+      type: object
+      required:
+        - error_code
+        - message
+      properties:
+        error_code:
+          type: string
+          enum:
+            - API_VALIDATION_ERROR
+            - CREDIT_CARD_DATA_ERROR
+            - INVALID_JSON_FORMAT
+        message:
+          type: string
+        errors:
+          $ref: '#/components/schemas/ArrayOfErrors'
+    Error403Response:
+      type: object
+      required:
+        - error_code
+        - message
+      properties:
+        error_code:
+          type: string
+          enum:
+            - REQUEST_FORBIDDEN_ERROR
+        message:
+          type: string
+        errors:
+          $ref: '#/components/schemas/ArrayOfErrors'
+    Error404Response:
+      type: object
+      required:
+        - error_code
+        - message
+      properties:
+        error_code:
+          type: string
+          enum:
+            - USER_NOT_FOUND
+            - CREDIT_CARD_CHARGE_NOT_FOUND_ERROR
+        message:
+          type: string
+        errors:
+          $ref: '#/components/schemas/ArrayOfErrors'
+    Error422Response:
+      type: object
+      required:
+        - error_code
+        - message
+      properties:
+        error_code:
+          type: string
+          enum:
+            - GENERATE_CHECKOUT_URL_ERROR
+            - DUPLICATE_PAYMENT_ERROR
+        message:
+          type: string
+        errors:
+          $ref: '#/components/schemas/ArrayOfErrors'
+    Error500Response:
+      type: object
+      required:
+        - error_code
+        - message
+      properties:
+        error_code:
+          type: string
+          enum:
+            - INTERNAL_SERVER_ERROR
+        message:
+          type: string
+        errors:
+          $ref: '#/components/schemas/ArrayOfErrors'
+    ArrayOfErrors:
+      nullable: true
+      type: array
+      items:
+        oneOf:
+          - type: string
+          - type: object
