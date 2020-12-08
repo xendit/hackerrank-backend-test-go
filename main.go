@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	defaultAppPort = ":3000"
+	defaultAppPort = ":8000"
 )
 
 func main() {

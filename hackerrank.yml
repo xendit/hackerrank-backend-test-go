@@ -1,0 +1,14 @@
+version: 1.0
+configuration:
+  has_webserver: true
+  scoring:
+    command: "make test"
+    files:
+      - junit.xml
+  ide_config:
+    default_open_files:
+      - main.go
+    project_menu:
+      run: go get -v
+      install: make init
+      test: make test

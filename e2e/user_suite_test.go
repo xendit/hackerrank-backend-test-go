@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	DefaultHost = "http://localhost:9090"
+	DefaultHost = "http://localhost:8000"
 	// DefaultTestDsn is the default url for testing postgresql in the postgres test suites
 	DefaultTestDsn = "user=user password=password dbname=test_user host=localhost port=5432 sslmode=disable"
 )
