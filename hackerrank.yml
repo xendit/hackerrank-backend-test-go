@@ -9,6 +9,6 @@ configuration:
     default_open_files:
       - main.go
     project_menu:
-      run: go get -v
-      install: make init
+      run: make run
+      install: make init-test
       test: make test
