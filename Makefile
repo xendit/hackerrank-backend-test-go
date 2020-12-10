@@ -17,6 +17,7 @@ init: migrate-prepare
  
 .PHONY: migrate-prepare
 migrate-prepare:
+	@mkdir bin
 	# Reference: https://github.com/golang-migrate/migrate/tree/master/cmd/migrate#unversioned
 	# @go get -tags 'postgres' -u github.com/golang-migrate/migrate/v4/cmd/migrate
 	# @go build -a -o ./bin/migrate -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate
@@ -52,3 +53,6 @@ migrate-drop:
 .PHONY: test
 test:
 	@go test -v -race -p 1 ./...
+
+e2e-test:
+	@go test -v -race -p 1  ./e2e
