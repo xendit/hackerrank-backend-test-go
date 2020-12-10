@@ -29,6 +29,7 @@ init-env:
 
 .PHONY: init-test
 init-test: init
+	@docker-compose up -d 
 
 .PHONY: migrate-prepare
 migrate-prepare:
