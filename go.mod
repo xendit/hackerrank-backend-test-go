@@ -1,6 +1,6 @@
 module github.com/xendit/hackerrank-backend-test-go
 
-go 1.15
+go 1.11
 
 require (
 	github.com/golang-migrate/migrate/v4 v4.14.1
