@@ -54,14 +54,14 @@ func TestUserSuite(t *testing.T) {
 
 func (s userTestSuite) BeforeTest(_, _ string) {
 	ok, err := s.Migration.Up()
-	s.Require().NoError(err)
-	s.Require().True(ok)
+	s.Assert().NoError(err)
+	s.Assert().True(ok)
 }
 
 func (s userTestSuite) AfterTest(_, _ string) {
 	ok, err := s.Migration.Down()
-	s.Require().NoError(err)
-	s.Require().True(ok)
+	s.Assert().NoError(err)
+	s.Assert().True(ok)
 }
 
 func (s userTestSuite) seedFetchUser() {
@@ -89,28 +89,28 @@ func (s userTestSuite) seedFetchUser() {
 
 	for _, item := range users {
 		jbyt, err := json.Marshal(item)
-		s.Require().NoError(err)
+		s.Assert().NoError(err)
 
 		req, err := http.NewRequest(http.MethodPost, uri, bytes.NewBuffer(jbyt))
-		s.Require().NoError(err)
+		s.Assert().NoError(err)
 
 		req.Header = RequiredHeaders
 		resp, err := s.Client.Do(req)
-		s.Require().NoError(err)
-		s.Require().Equal(http.StatusCreated, resp.StatusCode)
+		s.Assert().NoError(err)
+		s.Assert().Equal(http.StatusCreated, resp.StatusCode)
 		respByte, err := ioutil.ReadAll(resp.Body)
-		s.Require().NoError(err)
+		s.Assert().NoError(err)
 		defer resp.Body.Close()
 		respMap := map[string]interface{}{}
 		err = json.Unmarshal(respByte, &respMap)
-		s.Require().NoError(err)
-		s.Require().NotNil(respMap)
-		s.Require().NotNil(respMap["id"])
-		s.Require().NotEmpty(respMap["id"])
-		s.Require().Equal(item["firstName"], respMap["firstName"])
-		s.Require().Equal(item["lastName"], respMap["lastName"])
-		s.Require().Equal(item["address"], respMap["address"])
-		s.Require().Equal(item["isActive"], respMap["isActive"])
+		s.Assert().NoError(err)
+		s.Assert().NotNil(respMap)
+		s.Assert().NotNil(respMap["id"])
+		s.Assert().NotEmpty(respMap["id"])
+		s.Assert().Equal(item["firstName"], respMap["firstName"])
+		s.Assert().Equal(item["lastName"], respMap["lastName"])
+		s.Assert().Equal(item["address"], respMap["address"])
+		s.Assert().Equal(item["isActive"], respMap["isActive"])
 	}
 }
 
@@ -120,42 +120,42 @@ func (s userTestSuite) TestFetchUser() {
 
 	firstUrl := fmt.Sprintf("%s/api/users?limit=2&offset=0", s.Host)
 	req, err := http.NewRequest(http.MethodGet, firstUrl, nil)
-	s.Require().NoError(err)
+	s.Assert().NoError(err)
 	req.Header = RequiredHeaders
 
 	resp, err := s.Client.Do(req)
-	s.Require().NoError(err)
-	s.Require().Equal(http.StatusOK, resp.StatusCode)
+	s.Assert().NoError(err)
+	s.Assert().Equal(http.StatusOK, resp.StatusCode)
 	respByte, err := ioutil.ReadAll(resp.Body)
-	s.Require().NoError(err)
+	s.Assert().NoError(err)
 	defer resp.Body.Close()
 	respMap := []map[string]interface{}{}
 	err = json.Unmarshal(respByte, &respMap)
-	s.Require().NoError(err)
-	s.Require().NotNil(respMap)
-	s.Require().Len(respMap, 2)
-	s.Require().Equal("Third", respMap[0]["firstName"])
-	s.Require().Equal("Second", respMap[1]["firstName"])
+	s.Assert().NoError(err)
+	s.Assert().NotNil(respMap)
+	s.Assert().Len(respMap, 2)
+	s.Assert().Equal("Third", respMap[0]["firstName"])
+	s.Assert().Equal("Second", respMap[1]["firstName"])
 
 	secondUrl := fmt.Sprintf("%s/api/users?limit=2&offset=2", s.Host)
 	req, err = http.NewRequest(http.MethodGet, secondUrl, nil)
-	s.Require().NoError(err)
+	s.Assert().NoError(err)
 	req.Header = RequiredHeaders
 
 	resp, err = s.Client.Do(req)
-	s.Require().NoError(err)
+	s.Assert().NoError(err)
 
 	respByte, err = ioutil.ReadAll(resp.Body)
-	s.Require().NoError(err)
+	s.Assert().NoError(err)
 	defer resp.Body.Close()
 
 	respMap = []map[string]interface{}{}
 	err = json.Unmarshal(respByte, &respMap)
-	s.Require().NoError(err)
-	s.Require().Equal(http.StatusOK, resp.StatusCode)
-	s.Require().NotNil(respMap)
-	s.Require().Len(respMap, 1)
-	s.Require().Equal("First", respMap[0]["firstName"])
+	s.Assert().NoError(err)
+	s.Assert().Equal(http.StatusOK, resp.StatusCode)
+	s.Assert().NotNil(respMap)
+	s.Assert().Len(respMap, 1)
+	s.Assert().Equal("First", respMap[0]["firstName"])
 }
 
 func (s userTestSuite) TestCreateUser() {
@@ -169,23 +169,23 @@ func (s userTestSuite) TestCreateUser() {
 			"isActive":  true,
 		}
 		jbyt, err := json.Marshal(reqBody)
-		s.Require().NoError(err)
+		s.Assert().NoError(err)
 
 		req, err := http.NewRequest(http.MethodPost, uri, bytes.NewBuffer(jbyt))
-		s.Require().NoError(err)
+		s.Assert().NoError(err)
 
 		req.Header = RequiredHeaders
 		resp, err := s.Client.Do(req)
-		s.Require().NoError(err)
-		s.Require().Equal(http.StatusCreated, resp.StatusCode)
+		s.Assert().NoError(err)
+		s.Assert().Equal(http.StatusCreated, resp.StatusCode)
 		respByte, err := ioutil.ReadAll(resp.Body)
-		s.Require().NoError(err)
+		s.Assert().NoError(err)
 		defer resp.Body.Close()
 
 		respMap := map[string]interface{}{}
 		err = json.Unmarshal(respByte, &respMap)
-		s.Require().NoError(err)
-		s.Require().NotNil(respMap)
+		s.Assert().NoError(err)
+		s.Assert().NotNil(respMap)
 		s.assertUserValue(reqBody, respMap)
 	})
 
@@ -197,24 +197,24 @@ func (s userTestSuite) TestCreateUser() {
 			"isActive":  "potato",
 		}
 		jbyt, err := json.Marshal(reqBody)
-		s.Require().NoError(err)
+		s.Assert().NoError(err)
 
 		req, err := http.NewRequest(http.MethodPost, uri, bytes.NewBuffer(jbyt))
-		s.Require().NoError(err)
+		s.Assert().NoError(err)
 
 		req.Header = RequiredHeaders
 		resp, err := s.Client.Do(req)
-		s.Require().NoError(err)
-		s.Require().Equal(http.StatusBadRequest, resp.StatusCode)
+		s.Assert().NoError(err)
+		s.Assert().Equal(http.StatusBadRequest, resp.StatusCode)
 		respByte, err := ioutil.ReadAll(resp.Body)
-		s.Require().NoError(err)
+		s.Assert().NoError(err)
 		defer resp.Body.Close()
 
 		respMap := map[string]interface{}{}
 		err = json.Unmarshal(respByte, &respMap)
-		s.Require().NoError(err)
-		s.Require().NotNil(respMap)
-		s.Require().Equal("API_VALIDATION_ERROR", respMap["error_code"])
+		s.Assert().NoError(err)
+		s.Assert().NotNil(respMap)
+		s.Assert().Equal("API_VALIDATION_ERROR", respMap["error_code"])
 	})
 
 	s.T().Run("Return 400 for missing required field", func(t *testing.T) {
@@ -224,24 +224,24 @@ func (s userTestSuite) TestCreateUser() {
 			"isActive": true,
 		}
 		jbyt, err := json.Marshal(reqBody)
-		s.Require().NoError(err)
+		s.Assert().NoError(err)
 
 		req, err := http.NewRequest(http.MethodPost, uri, bytes.NewBuffer(jbyt))
-		s.Require().NoError(err)
+		s.Assert().NoError(err)
 
 		req.Header = RequiredHeaders
 		resp, err := s.Client.Do(req)
-		s.Require().NoError(err)
-		s.Require().Equal(http.StatusBadRequest, resp.StatusCode)
+		s.Assert().NoError(err)
+		s.Assert().Equal(http.StatusBadRequest, resp.StatusCode)
 		respByte, err := ioutil.ReadAll(resp.Body)
-		s.Require().NoError(err)
+		s.Assert().NoError(err)
 		defer resp.Body.Close()
 
 		respMap := map[string]interface{}{}
 		err = json.Unmarshal(respByte, &respMap)
-		s.Require().NoError(err)
-		s.Require().NotNil(respMap)
-		s.Require().Equal("API_VALIDATION_ERROR", respMap["error_code"])
+		s.Assert().NoError(err)
+		s.Assert().NotNil(respMap)
+		s.Assert().Equal("API_VALIDATION_ERROR", respMap["error_code"])
 	})
 }
 
@@ -255,39 +255,39 @@ func (s userTestSuite) TestGetUserByID() {
 		"isActive":  true,
 	}
 	jbyt, err := json.Marshal(reqBody)
-	s.Require().NoError(err)
+	s.Assert().NoError(err)
 
 	req, err := http.NewRequest(http.MethodPost, uri, bytes.NewBuffer(jbyt))
-	s.Require().NoError(err)
+	s.Assert().NoError(err)
 
 	req.Header = RequiredHeaders
 	resp, err := s.Client.Do(req)
-	s.Require().NoError(err)
-	s.Require().Equal(http.StatusCreated, resp.StatusCode)
+	s.Assert().NoError(err)
+	s.Assert().Equal(http.StatusCreated, resp.StatusCode)
 	respByte, err := ioutil.ReadAll(resp.Body)
-	s.Require().NoError(err)
+	s.Assert().NoError(err)
 	defer resp.Body.Close()
 
 	respMap := map[string]interface{}{}
 	err = json.Unmarshal(respByte, &respMap)
-	s.Require().NoError(err)
+	s.Assert().NoError(err)
 	s.assertUserValue(reqBody, respMap)
 	// new request for GET
 	getUserByIDURI := fmt.Sprintf("%s/api/users/%v", s.Host, respMap["id"])
 	req, err = http.NewRequest(http.MethodGet, getUserByIDURI, nil)
-	s.Require().NoError(err)
+	s.Assert().NoError(err)
 
 	req.Header = RequiredHeaders
 	resp, err = s.Client.Do(req)
-	s.Require().NoError(err)
-	s.Require().Equal(http.StatusOK, resp.StatusCode)
+	s.Assert().NoError(err)
+	s.Assert().Equal(http.StatusOK, resp.StatusCode)
 	respByte, err = ioutil.ReadAll(resp.Body)
-	s.Require().NoError(err)
+	s.Assert().NoError(err)
 	defer resp.Body.Close()
 
 	respMap = map[string]interface{}{}
 	err = json.Unmarshal(respByte, &respMap)
-	s.Require().NoError(err)
+	s.Assert().NoError(err)
 	s.assertUserValue(reqBody, respMap)
 
 }
@@ -302,41 +302,41 @@ func (s userTestSuite) TestUpdateUserUsingPUT() {
 		"isActive":  true,
 	}
 	jbyt, err := json.Marshal(reqBody)
-	s.Require().NoError(err)
+	s.Assert().NoError(err)
 	s.T().Log("Start the HTTP call")
 	req, err := http.NewRequest(http.MethodPost, uri, bytes.NewBuffer(jbyt))
-	s.Require().NoError(err)
+	s.Assert().NoError(err)
 
 	req.Header = RequiredHeaders
 	resp, err := s.Client.Do(req)
-	s.Require().NoError(err)
-	s.Require().Equal(http.StatusCreated, resp.StatusCode)
+	s.Assert().NoError(err)
+	s.Assert().Equal(http.StatusCreated, resp.StatusCode)
 	respByte, err := ioutil.ReadAll(resp.Body)
-	s.Require().NoError(err)
+	s.Assert().NoError(err)
 	defer resp.Body.Close()
 
 	respMap := map[string]interface{}{}
 	err = json.Unmarshal(respByte, &respMap)
-	s.Require().NoError(err)
+	s.Assert().NoError(err)
 	s.assertUserValue(reqBody, respMap)
 
 	s.T().Log("Ensure the inserted user data")
 	// new request for GET
 	getUserByIDURI := fmt.Sprintf("%s/api/users/%v", s.Host, respMap["id"])
 	req, err = http.NewRequest(http.MethodGet, getUserByIDURI, nil)
-	s.Require().NoError(err)
+	s.Assert().NoError(err)
 
 	req.Header = RequiredHeaders
 	resp, err = s.Client.Do(req)
-	s.Require().NoError(err)
-	s.Require().Equal(http.StatusOK, resp.StatusCode)
+	s.Assert().NoError(err)
+	s.Assert().Equal(http.StatusOK, resp.StatusCode)
 	respByte, err = ioutil.ReadAll(resp.Body)
-	s.Require().NoError(err)
+	s.Assert().NoError(err)
 	defer resp.Body.Close()
 
 	respMap = map[string]interface{}{}
 	err = json.Unmarshal(respByte, &respMap)
-	s.Require().NoError(err)
+	s.Assert().NoError(err)
 	s.assertUserValue(reqBody, respMap)
 
 	s.T().Log("Update the user data")
@@ -348,22 +348,22 @@ func (s userTestSuite) TestUpdateUserUsingPUT() {
 		"isActive":  true,
 	}
 	jbyt, err = json.Marshal(reqBodyUpdate)
-	s.Require().NoError(err)
+	s.Assert().NoError(err)
 
 	req, err = http.NewRequest(http.MethodPut, updateUserByIDURI, bytes.NewBuffer(jbyt))
-	s.Require().NoError(err)
+	s.Assert().NoError(err)
 
 	req.Header = RequiredHeaders
 	resp, err = s.Client.Do(req)
-	s.Require().NoError(err)
-	s.Require().Equal(http.StatusOK, resp.StatusCode)
+	s.Assert().NoError(err)
+	s.Assert().Equal(http.StatusOK, resp.StatusCode)
 	respByte, err = ioutil.ReadAll(resp.Body)
-	s.Require().NoError(err)
+	s.Assert().NoError(err)
 	defer resp.Body.Close()
 
 	updateRespMap := map[string]interface{}{}
 	err = json.Unmarshal(respByte, &updateRespMap)
-	s.Require().NoError(err)
+	s.Assert().NoError(err)
 	s.assertUserValue(reqBodyUpdate, updateRespMap)
 
 }
@@ -378,74 +378,74 @@ func (s userTestSuite) TestDeleteUserByID() {
 		"isActive":  true,
 	}
 	jbyt, err := json.Marshal(reqBody)
-	s.Require().NoError(err)
+	s.Assert().NoError(err)
 
 	req, err := http.NewRequest(http.MethodPost, uri, bytes.NewBuffer(jbyt))
-	s.Require().NoError(err)
+	s.Assert().NoError(err)
 
 	req.Header = RequiredHeaders
 	resp, err := s.Client.Do(req)
-	s.Require().NoError(err)
-	s.Require().Equal(http.StatusCreated, resp.StatusCode)
+	s.Assert().NoError(err)
+	s.Assert().Equal(http.StatusCreated, resp.StatusCode)
 	respByte, err := ioutil.ReadAll(resp.Body)
-	s.Require().NoError(err)
+	s.Assert().NoError(err)
 	defer resp.Body.Close()
 
 	respMap := map[string]interface{}{}
 	err = json.Unmarshal(respByte, &respMap)
-	s.Require().NoError(err)
+	s.Assert().NoError(err)
 	s.assertUserValue(reqBody, respMap)
 	// new request for GET: assert the inserted User is exists
 	getUserByIDURI := fmt.Sprintf("%s/api/users/%v", s.Host, respMap["id"])
 	req, err = http.NewRequest(http.MethodGet, getUserByIDURI, nil)
-	s.Require().NoError(err)
+	s.Assert().NoError(err)
 
 	req.Header = RequiredHeaders
 	resp, err = s.Client.Do(req)
-	s.Require().NoError(err)
-	s.Require().Equal(http.StatusOK, resp.StatusCode)
+	s.Assert().NoError(err)
+	s.Assert().Equal(http.StatusOK, resp.StatusCode)
 	respByte, err = ioutil.ReadAll(resp.Body)
-	s.Require().NoError(err)
+	s.Assert().NoError(err)
 	defer resp.Body.Close()
 
 	respMap = map[string]interface{}{}
 	err = json.Unmarshal(respByte, &respMap)
-	s.Require().NoError(err)
+	s.Assert().NoError(err)
 	s.assertUserValue(reqBody, respMap)
 
 	// new request for DELETE: assert the inserted User is exists
 	deleteUserByIDURI := fmt.Sprintf("%s/api/users/%v", s.Host, respMap["id"])
 	req, err = http.NewRequest(http.MethodDelete, deleteUserByIDURI, nil)
-	s.Require().NoError(err)
+	s.Assert().NoError(err)
 
 	req.Header = RequiredHeaders
 	resp, err = s.Client.Do(req)
-	s.Require().NoError(err)
-	s.Require().Equal(http.StatusNoContent, resp.StatusCode)
+	s.Assert().NoError(err)
+	s.Assert().Equal(http.StatusNoContent, resp.StatusCode)
 	closerDelete := ioutil.NopCloser(resp.Body)
-	s.Require().NoError(err)
+	s.Assert().NoError(err)
 	defer closerDelete.Close()
 
 	// new request for GET: assert the delete action is success User is exists
 	getDeletedUserByIDURI := fmt.Sprintf("%s/api/users/%v", s.Host, respMap["id"])
 	req, err = http.NewRequest(http.MethodGet, getDeletedUserByIDURI, nil)
-	s.Require().NoError(err)
+	s.Assert().NoError(err)
 
 	req.Header = RequiredHeaders
 	resp, err = s.Client.Do(req)
-	s.Require().NoError(err)
-	s.Require().Equal(http.StatusNotFound, resp.StatusCode)
+	s.Assert().NoError(err)
+	s.Assert().Equal(http.StatusNotFound, resp.StatusCode)
 	closerGet := ioutil.NopCloser(resp.Body)
-	s.Require().NoError(err)
+	s.Assert().NoError(err)
 	defer closerGet.Close()
 }
 
 func (s *userTestSuite) assertUserValue(expected map[string]interface{}, actual map[string]interface{}) {
-	s.Require().NotNil(actual)
-	s.Require().NotNil(actual["id"])
-	s.Require().NotEmpty(actual["id"])
-	s.Require().Equal(expected["firstName"], actual["firstName"])
-	s.Require().Equal(expected["lastName"], actual["lastName"])
-	s.Require().Equal(expected["address"], actual["address"])
-	s.Require().Equal(expected["isActive"], actual["isActive"])
+	s.Assert().NotNil(actual)
+	s.Assert().NotNil(actual["id"])
+	s.Assert().NotEmpty(actual["id"])
+	s.Assert().Equal(expected["firstName"], actual["firstName"])
+	s.Assert().Equal(expected["lastName"], actual["lastName"])
+	s.Assert().Equal(expected["address"], actual["address"])
+	s.Assert().Equal(expected["isActive"], actual["isActive"])
 }

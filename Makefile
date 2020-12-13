@@ -17,16 +17,10 @@ init: init-env migrate-prepare
  
 .PHONY: init-env
 init-env:
-	@curl -fsSL https://get.docker.com -o get-docker.sh
-	@sudo sh get-docker.sh
-
-	@sudo curl -L https://github.com/docker/compose/releases/download/1.18.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
-	@sudo chmod +x /usr/local/bin/docker-compose
-	@docker-compose --version
 
 .PHONY: init-test
 init-test: init
-	@docker-compose up -d 
+	go get -u github.com/jstemmer/go-junit-report
 
 .PHONY: migrate-prepare
 migrate-prepare:
@@ -49,8 +43,8 @@ test:
 	@go test -v -race -p 1 ./...
 
 .PHONY: e2e-test
-e2e-test:
-	@go test -v -race -p 1  ./e2e
+e2e-test: init-test
+	@go test -v -race -p 1  ./e2e 2>&1 | go-junit-report > junit.xml
 
 .PHONY: run
 run:
