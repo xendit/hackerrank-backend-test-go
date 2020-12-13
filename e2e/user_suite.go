@@ -9,7 +9,7 @@ import (
 
 	// This is imported for migrations
 	_ "github.com/golang-migrate/migrate/v4/source/file"
-	_ "github.com/lib/pq"
+	_ "github.com/mattn/go-sqlite3"
 )
 
 type Suite struct {
@@ -24,11 +24,11 @@ type Suite struct {
 // SetupSuite setup at the beginning of test
 func (s *Suite) SetupSuite() {
 	var err error
-	s.DBConn, err = sql.Open("postgres", s.DBDsn)
+	s.DBConn, err = sql.Open("sqlite3", s.DBDsn)
 	s.Require().NoError(err)
 	err = s.DBConn.Ping()
 	s.Require().NoError(err)
-	s.Migration, err = repositories.RunMigrationPostgres(s.DBConn, s.MigrationLocationFolder)
+	s.Migration, err = repositories.RunMigrationSQLite(s.DBConn, s.MigrationLocationFolder)
 	s.Require().NoError(err)
 
 	s.Client = http.DefaultClient

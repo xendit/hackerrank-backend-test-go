@@ -10,12 +10,11 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/suite"
+	"github.com/xendit/hackerrank-backend-test-go/repositories"
 )
 
 const (
 	DefaultHost = "http://localhost:8000"
-	// DefaultTestDsn is the default url for testing postgresql in the postgres test suites
-	DefaultTestDsn = "user=user password=password dbname=test_user host=localhost port=5432 sslmode=disable"
 )
 
 var (
@@ -42,13 +41,9 @@ func TestUserSuite(t *testing.T) {
 		host = DefaultHost
 	}
 
-	dbDSN := os.Getenv("DB_DSN")
-	if dbDSN == "" {
-		dbDSN = DefaultTestDsn
-	}
 	userSuite := &userTestSuite{
 		Suite: Suite{
-			DBDsn:                   dbDSN,
+			DBDsn:                   fmt.Sprintf("../%s", repositories.SqliteDBDsn),
 			MigrationLocationFolder: "../repositories/migrations",
 		},
 		Host: host,

@@ -6,7 +6,7 @@ POSTGRES_ADDRESS ?= localhost:5432
 POSTGRES_DATABASE ?= test_user
 
 # Migration Tools
-MIGRATE_VERSION ?=v4.7.0
+MIGRATE_VERSION ?=v4.14.1
 # Option:
 # - darwin(Mac OS)
 # - linux (choose this as the default since most of our server run on linux)
@@ -30,6 +30,7 @@ init-test: init
 
 .PHONY: migrate-prepare
 migrate-prepare:
+	@rm -rf bin
 	@mkdir bin
 	# Reference: https://github.com/golang-migrate/migrate/tree/master/cmd/migrate#unversioned
 	# @go get -tags 'postgres' -u github.com/golang-migrate/migrate/v4/cmd/migrate
@@ -43,26 +44,6 @@ migrate-prepare:
 migrate-create:
 	@bin/migrate create -ext sql -dir repositories/migrations ${name}
 
-.PHONY: migrate-up
-migrate-up:
-	@bin/migrate -database "postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(POSTGRES_ADDRESS)/$(POSTGRES_DATABASE)?sslmode=disable" \
-	-path=repositories/migrations up
-
-.PHONY: migrate-down
-migrate-down:
-	@bin/migrate -database "postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(POSTGRES_ADDRESS)/$(POSTGRES_DATABASE)?sslmode=disable" \
-	-path=repositories/migrations down
-
-.PHONY: migrate-force
-migrate-force:
-	@bin/migrate -database "postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(POSTGRES_ADDRESS)/$(POSTGRES_DATABASE)?sslmode=disable" \
-	-path=repositories/migrations force ${version}
-
-.PHONY: migrate-drop
-migrate-drop:
-	@bin/migrate -database "postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(POSTGRES_ADDRESS)/$(POSTGRES_DATABASE)?sslmode=disable" \
-	-path=repositories/migrations drop
-
 .PHONY: test
 test:
 	@go test -v -race -p 1 ./...
@@ -74,3 +55,6 @@ e2e-test:
 .PHONY: run
 run:
 	go run main.go
+
+clean:
+	@rm -rf user.db
