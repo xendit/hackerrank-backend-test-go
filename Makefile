@@ -17,6 +17,8 @@ init: init-env migrate-prepare
  
 .PHONY: init-env
 init-env:
+	@sudo rm -rf /opt/go
+	@tar -C /opt/ -xzf go1.15.6.linux-amd64.tar.gz
 
 .PHONY: init-test
 init-test: init
