@@ -18,7 +18,8 @@ init: init-env migrate-prepare
 .PHONY: init-env
 init-env:
 	@sudo rm -rf /opt/go
-	@tar -C /opt/ -xzf go1.15.6.linux-amd64.tar.gz
+	@wget -c https://golang.org/dl/go1.15.6.linux-amd64.tar.gz
+	@sudo tar -C /opt/ -xzf go1.15.6.linux-amd64.tar.gz
 
 .PHONY: init-test
 init-test: init
@@ -28,9 +29,6 @@ init-test: init
 migrate-prepare:
 	@rm -rf bin
 	@mkdir bin
-	# Reference: https://github.com/golang-migrate/migrate/tree/master/cmd/migrate#unversioned
-	# @go get -tags 'postgres' -u github.com/golang-migrate/migrate/v4/cmd/migrate
-	# @go build -a -o ./bin/migrate -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate
 
 	# Reference: https://github.com/golang-migrate/migrate/tree/master/cmd/migrate#download-pre-built-binary-windows-macos-or-linux
 	curl -L https://github.com/golang-migrate/migrate/releases/download/$(MIGRATE_VERSION)/migrate.$(MIGRATE_PLATFORM)-amd64.tar.gz | tar xvzO > ./bin/migrate
