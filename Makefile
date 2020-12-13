@@ -1,3 +1,7 @@
+ifndef $(GOPATH)
+    GOPATH=$(shell go env GOPATH)
+    export GOPATH
+endif
 
 # Database
 POSTGRES_USER ?= user
@@ -14,7 +18,7 @@ MIGRATE_VERSION ?=v4.14.1
 MIGRATE_PLATFORM ?=darwin
 .PHONY: init
 init: init-env migrate-prepare
- 
+
 .PHONY: init-env
 init-env:
 	@sudo rm -rf /opt/go
@@ -23,7 +27,7 @@ init-env:
 
 .PHONY: init-test
 init-test: init
-	go get -u github.com/jstemmer/go-junit-report
+	@go install -v github.com/jstemmer/go-junit-report
 
 .PHONY: migrate-prepare
 migrate-prepare:
@@ -44,7 +48,7 @@ test:
 
 .PHONY: e2e-test
 e2e-test:
-	@go test -v -race -p 1  ./e2e 2>&1 | go-junit-report > junit.xml
+	@go test -v -race -p 1  ./e2e 2>&1 | $(GOPATH)/bin/go-junit-report > junit.xml
 
 .PHONY: run
 run:
