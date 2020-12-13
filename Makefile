@@ -45,7 +45,7 @@ test:
 	@go test -v -race -p 1 ./...
 
 .PHONY: e2e-test
-e2e-test: init-test
+e2e-test:
 	@go test -v -race -p 1  ./e2e 2>&1 | go-junit-report > junit.xml
 
 .PHONY: run
