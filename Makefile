@@ -15,7 +15,7 @@ MIGRATE_VERSION ?=v4.14.1
 # - darwin(Mac OS)
 # - linux (choose this as the default since most of our server run on linux)
 # - windows
-MIGRATE_PLATFORM ?=darwin
+MIGRATE_PLATFORM ?=linux
 .PHONY: init
 init: init-env migrate-prepare
 
