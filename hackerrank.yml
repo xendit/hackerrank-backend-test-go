@@ -1,0 +1,14 @@
+version: 1.0
+configuration:
+  has_webserver: true
+  scoring:
+    command: "make e2e-test"
+    files:
+      - junit.xml
+  ide_config:
+    default_open_files:
+      - main.go
+    project_menu:
+      run: make run
+      install: make init-test
+      test: make test
