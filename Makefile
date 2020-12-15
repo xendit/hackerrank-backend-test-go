@@ -10,7 +10,7 @@ POSTGRES_ADDRESS ?= localhost:5432
 POSTGRES_DATABASE ?= test_user
 
 # Migration Tools
-MIGRATE_VERSION ?=v4.12.2
+MIGRATE_VERSION ?=v4.10.0
 # Option:
 # - darwin(Mac OS)
 # - linux (choose this as the default since most of our server run on linux)
