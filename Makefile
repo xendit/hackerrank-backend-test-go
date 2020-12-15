@@ -10,7 +10,7 @@ POSTGRES_ADDRESS ?= localhost:5432
 POSTGRES_DATABASE ?= test_user
 
 # Migration Tools
-MIGRATE_VERSION ?=v4.14.1
+MIGRATE_VERSION ?=v4.12.2
 # Option:
 # - darwin(Mac OS)
 # - linux (choose this as the default since most of our server run on linux)
@@ -21,12 +21,10 @@ init: init-env migrate-prepare
 
 .PHONY: init-env
 init-env:
-	@sudo rm -rf /opt/go
-	@wget -c https://golang.org/dl/go1.15.6.linux-amd64.tar.gz
-	@sudo tar -C /opt/ -xzf go1.15.6.linux-amd64.tar.gz
 
 .PHONY: init-test
 init-test: init
+	@go get -v
 	@go install -v github.com/jstemmer/go-junit-report
 
 .PHONY: migrate-prepare
