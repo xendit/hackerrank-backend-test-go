@@ -42,7 +42,7 @@ migrate-create:
 
 .PHONY: test
 test:
-	@go test -v -race 1 ./...
+	@go test -v -race ./...
 
 .PHONY: e2e-test
 e2e-test: init-test
