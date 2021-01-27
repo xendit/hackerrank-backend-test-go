@@ -9,7 +9,7 @@ Thanks for applying to Xendit. Here we list some important notes for you to work
 
 ### Important Notes
 
-- Don't edit the e2e code. But instead you need to pass all the test written there.
+- Do not edit the e2e code. But instead you need to pass all the test written there.
 - Please run the test locally first before submitting
   ```bash
   $ make test  # for unit test
