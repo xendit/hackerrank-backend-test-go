@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/stretchr/testify/suite"
+	"github.com/xendit/hackerrank-backend-test-go/app"
 	"github.com/xendit/hackerrank-backend-test-go/repositories"
 
 	// This is imported for migrations
@@ -23,6 +24,7 @@ type Suite struct {
 
 // SetupSuite setup at the beginning of test
 func (s *Suite) SetupSuite() {
+	go app.StartServer()
 	var err error
 	s.DBConn, err = sql.Open("sqlite3", s.DBDsn)
 	s.Require().NoError(err)

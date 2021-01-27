@@ -10,6 +10,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/suite"
+
 	"github.com/xendit/hackerrank-backend-test-go/repositories"
 )
 
@@ -33,7 +34,7 @@ type userTestSuite struct {
 
 func TestUserSuite(t *testing.T) {
 	if testing.Short() {
-		t.Skip("Skip the Test Suite for Payment Repository")
+		t.Skip("Skipping Test Suite")
 	}
 
 	host := os.Getenv("TEST_HOST")
