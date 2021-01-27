@@ -1,7 +1,7 @@
 # hackerrank-backend-test-go
 
 Hi!
-Thanks for applying to us. Here we will listed some requirements before work on this test.
+Thanks for applying to Xendit. Here we list some important notes for you to work on the test.
 
 ### Requirements
 - Go 1.11 (Hackerrank Server currently support only for Go 1.11)
