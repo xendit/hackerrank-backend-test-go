@@ -10,6 +10,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/suite"
+
 	"github.com/xendit/hackerrank-backend-test-go/repositories"
 )
 

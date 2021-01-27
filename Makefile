@@ -3,11 +3,6 @@ ifndef $(GOPATH)
     export GOPATH
 endif
 
-# Database
-POSTGRES_USER ?= user
-POSTGRES_PASSWORD ?= password
-POSTGRES_ADDRESS ?= localhost:5432
-POSTGRES_DATABASE ?= test_user
 
 # Migration Tools
 MIGRATE_VERSION ?=v4.10.0
@@ -17,7 +12,7 @@ MIGRATE_VERSION ?=v4.10.0
 # - windows
 MIGRATE_PLATFORM ?=linux
 .PHONY: init
-init: init-env migrate-prepare
+init: init-env
 
 .PHONY: init-env
 init-env:
