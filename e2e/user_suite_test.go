@@ -116,7 +116,6 @@ func (s userTestSuite) seedFetchUser() {
 }
 
 func (s userTestSuite) TestFetchUser() {
-	s.T().Log("Seeding the user data")
 	s.seedFetchUser()
 
 	firstUrl := fmt.Sprintf("%s/api/users?limit=2&offset=0", s.Host)
@@ -294,7 +293,6 @@ func (s userTestSuite) TestGetUserByID() {
 }
 
 func (s userTestSuite) TestUpdateUserUsingPUT() {
-	s.T().Log("Seeding the user data")
 	uri := fmt.Sprintf("%s/api/users", s.Host)
 	reqBody := map[string]interface{}{
 		"firstName": "John",
@@ -304,7 +302,6 @@ func (s userTestSuite) TestUpdateUserUsingPUT() {
 	}
 	jbyt, err := json.Marshal(reqBody)
 	s.Assert().NoError(err)
-	s.T().Log("Start the HTTP call")
 	req, err := http.NewRequest(http.MethodPost, uri, bytes.NewBuffer(jbyt))
 	s.Assert().NoError(err)
 
@@ -321,7 +318,6 @@ func (s userTestSuite) TestUpdateUserUsingPUT() {
 	s.Assert().NoError(err)
 	s.assertUserValue(reqBody, respMap)
 
-	s.T().Log("Ensure the inserted user data")
 	// new request for GET
 	getUserByIDURI := fmt.Sprintf("%s/api/users/%v", s.Host, respMap["id"])
 	req, err = http.NewRequest(http.MethodGet, getUserByIDURI, nil)
@@ -340,7 +336,6 @@ func (s userTestSuite) TestUpdateUserUsingPUT() {
 	s.Assert().NoError(err)
 	s.assertUserValue(reqBody, respMap)
 
-	s.T().Log("Update the user data")
 	updateUserByIDURI := fmt.Sprintf("%s/api/users/%v", s.Host, respMap["id"])
 	reqBodyUpdate := map[string]interface{}{
 		"firstName": "John",
